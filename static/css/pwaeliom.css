@@ -1,0 +1,46 @@
+* {
+    font-family: sans-serif;
+}
+
+.pwa-eliom-head{
+    background-color: #63065f;
+    vertical-align: center;
+    color: white;
+}
+
+.pwa-eliom-h2{
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.pwa-eliom-refresh{
+    float: right;
+    background-color: white;
+    border-radius: 3px;
+    border: 0;
+    width: 80px;
+    height: 40px;
+    text-align: center;
+    margin-top: 15px;
+    margin-right: 15px;
+    font-size: 18px;
+}
+
+.pwa-eliom-container{
+    width: 100%;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.pwa-eliom-city-img{
+    width: 80%;
+}
+
+.pwa-weather-bord{
+    margin-bottom: 10px;
+    background-color: white;
+    opacity: 0.75;
+    font-size: 14px;
+    border: 2px dashed #edeadf;
+}
