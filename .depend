@@ -1,0 +1,24 @@
+_server/promise.cmo :
+_server/promise.cmx :
+_server/promise.cmo : _server/promise.type_mli
+_server/promise.cmx : _server/promise.type_mli
+_server/pwaeliom.cmo :
+_server/pwaeliom.cmx :
+_server/pwaeliom.cmo : _server/pwaeliom.type_mli
+_server/pwaeliom.cmx : _server/pwaeliom.type_mli
+_server/serviceWorker.cmo :
+_server/serviceWorker.cmx :
+_server/serviceWorker.cmo : _server/serviceWorker.type_mli
+_server/serviceWorker.cmx : _server/serviceWorker.type_mli
+_client/promise.cmo :
+_client/promise.cmx :
+_client/promise.cmo : _server/promise.type_mli
+_client/promise.cmx : _server/promise.type_mli
+_client/pwaeliom.cmo : _client/serviceWorker.cmo _client/promise.cmo
+_client/pwaeliom.cmx : _client/serviceWorker.cmx _client/promise.cmx
+_client/pwaeliom.cmo : _server/pwaeliom.type_mli
+_client/pwaeliom.cmx : _server/pwaeliom.type_mli
+_client/serviceWorker.cmo : _client/promise.cmo
+_client/serviceWorker.cmx : _client/promise.cmx
+_client/serviceWorker.cmo : _server/serviceWorker.type_mli
+_client/serviceWorker.cmx : _server/serviceWorker.type_mli
