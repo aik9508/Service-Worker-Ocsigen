@@ -32,7 +32,7 @@ DEPSDIR := _deps
 ifeq ($(DEBUG),yes)
   GENERATE_DEBUG ?= -g
   RUN_DEBUG ?= "-v"
-  DEBUG_JS ?= -jsopt -pretty -jsopt -noinline -jsopt -debuginfo
+  DEBUG_JS ?= --jsopt --pretty --jsopt --noinline --jsopt --debuginfo
 endif
 
 ##----------------------------------------------------------------------
@@ -51,7 +51,7 @@ DIST_DIRS = $(ETCDIR) $(DATADIR) $(LIBDIR) $(LOGDIR) $(STATICDIR) $(ELIOMSTATICD
 ##----------------------------------------------------------------------
 ## Testing
 
-DIST_FILES = $(ELIOMSTATICDIR)/$(PROJECT_NAME).js $(LIBDIR)/$(PROJECT_NAME).cma
+DIST_FILES = $(ELIOMSTATICDIR)/$(SW_NAME).js $(ELIOMSTATICDIR)/$(PROJECT_NAME).js $(LIBDIR)/$(PROJECT_NAME).cma
 
 .PHONY: test.byte test.opt
 test.byte: $(addprefix $(TEST_PREFIX),$(ETCDIR)/$(PROJECT_NAME)-test.conf $(DIST_DIRS) $(DIST_FILES))
@@ -194,6 +194,10 @@ CLIENT_INC  := ${addprefix -package ,${CLIENT_PACKAGES}}
 CLIENT_OBJS := $(filter %.eliom %.ml, $(CLIENT_FILES))
 CLIENT_OBJS := $(patsubst %.eliom,${ELIOM_CLIENT_DIR}/%.cmo, ${CLIENT_OBJS})
 CLIENT_OBJS := $(patsubst %.ml,${ELIOM_CLIENT_DIR}/%.cmo, ${CLIENT_OBJS})
+
+$(TEST_PREFIX)$(ELIOMSTATICDIR)/$(SW_NAME).js: $(ELIOM_CLIENT_DIR)/$(SW_NAME).cmo
+	$(JS_OF_ELIOM) -o $@ $(GENERATE_DEBUG) $(CLIENT_INC) $(DEBUG_JS) \
+		$(ELIOM_CLIENT_DIR)/$(SW_NAME).cmo
 
 $(TEST_PREFIX)$(ELIOMSTATICDIR)/$(PROJECT_NAME).js: $(call objs,$(ELIOM_CLIENT_DIR),cmo,$(CLIENT_FILES)) | $(TEST_PREFIX)$(ELIOMSTATICDIR)
 	${JS_OF_ELIOM} -o $@ $(GENERATE_DEBUG) $(CLIENT_INC) $(DEBUG_JS) \
