@@ -1,4 +1,3 @@
-[%%client.start]
 open ServiceWorker
 
 let cacheName = Js.string "demo-ocsigen-sw-1.0"

@@ -15,6 +15,7 @@ include Makefile.options
 ELIOMC            := eliomc -ppx
 ELIOMOPT          := eliomopt -ppx
 JS_OF_ELIOM       := js_of_eliom -ppx
+JS_OF_OCAML       := js_of_ocaml
 ELIOMDEP          := eliomdep
 OCSIGENSERVER     := ocsigenserver
 OCSIGENSERVER.OPT := ocsigenserver.opt
@@ -51,7 +52,7 @@ DIST_DIRS = $(ETCDIR) $(DATADIR) $(LIBDIR) $(LOGDIR) $(STATICDIR) $(ELIOMSTATICD
 ##----------------------------------------------------------------------
 ## Testing
 
-DIST_FILES = $(ELIOMSTATICDIR)/$(SW_NAME).js $(ELIOMSTATICDIR)/$(PROJECT_NAME).js $(LIBDIR)/$(PROJECT_NAME).cma
+DIST_FILES = $(ELIOMSTATICDIR)/$(PROJECT_NAME).js $(ELIOMSTATICDIR)/$(SW_NAME).js $(LIBDIR)/$(PROJECT_NAME).cma
 
 .PHONY: test.byte test.opt
 test.byte: $(addprefix $(TEST_PREFIX),$(ETCDIR)/$(PROJECT_NAME)-test.conf $(DIST_DIRS) $(DIST_FILES))
@@ -190,18 +191,21 @@ ${ELIOM_SERVER_DIR}/%.cmx: %.eliom
 
 CLIENT_LIBS := ${addprefix -package ,${CLIENT_PACKAGES}}
 CLIENT_INC  := ${addprefix -package ,${CLIENT_PACKAGES}}
+WORKER_INC  := ${addprefix -package ,${WORKER_PACKAGES}}
 
 CLIENT_OBJS := $(filter %.eliom %.ml, $(CLIENT_FILES))
 CLIENT_OBJS := $(patsubst %.eliom,${ELIOM_CLIENT_DIR}/%.cmo, ${CLIENT_OBJS})
 CLIENT_OBJS := $(patsubst %.ml,${ELIOM_CLIENT_DIR}/%.cmo, ${CLIENT_OBJS})
 
-$(TEST_PREFIX)$(ELIOMSTATICDIR)/$(SW_NAME).js: $(ELIOM_CLIENT_DIR)/$(SW_NAME).cmo
-	$(JS_OF_ELIOM) -o $@ $(GENERATE_DEBUG) $(CLIENT_INC) $(DEBUG_JS) \
-		$(ELIOM_CLIENT_DIR)/$(SW_NAME).cmo
+$(TEST_PREFIX)$(ELIOMSTATICDIR)/$(SW_NAME).js: $(ELIOM_CLIENT_DIR)/$(SW_NAME).byte
+	$(JS_OF_OCAML) -o $@ $<
 
 $(TEST_PREFIX)$(ELIOMSTATICDIR)/$(PROJECT_NAME).js: $(call objs,$(ELIOM_CLIENT_DIR),cmo,$(CLIENT_FILES)) | $(TEST_PREFIX)$(ELIOMSTATICDIR)
 	${JS_OF_ELIOM} -o $@ $(GENERATE_DEBUG) $(CLIENT_INC) $(DEBUG_JS) \
           $(call depsort,$(ELIOM_CLIENT_DIR),cmo,-client,$(CLIENT_INC),$(CLIENT_FILES))
+
+${ELIOM_CLIENT_DIR}/%.byte: %.ml
+	ocamlfind ocamlc -linkpkg $(WORKER_INC) -o $@ $<
 
 ${ELIOM_CLIENT_DIR}/%.cmi: %.mli
 	${JS_OF_ELIOM} -c ${CLIENT_INC} $(GENERATE_DEBUG) $<
