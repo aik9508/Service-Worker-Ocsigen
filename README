@@ -9,6 +9,19 @@ Generally, you can compile it and run ocsigenserver on it by
   $ make test.byte (or test.opt)
 See below for other useful targets for make.
 
+Depends 
+---------------
+The following packages are required in order to compile this project:
+
+- js_of_ocaml https://github.com/aik9508/js_of_ocaml
+
+- eliom (modular-jsoo branch) https://github.com/ocsigen/eliom/tree/modular-jsoo
+
+- ocsigen-toolkit (modular-jsoo branch) https://github.com/ocsigen/ocsigen-toolkit/tree/modular-jsoo
+
+- ocsigen-start (modular-jsoo branch) https://github.com/ocsigen/ocsigen-start/tree/modular-jsoo
+
+
 Generated files
 ---------------
 
